@@ -1,0 +1,12 @@
+import { z } from "zod";
+import { Request, Response, NextFunction } from "express";
+
+export const validate = (schema: z.ZodTypeAny) =>
+    (req: Request, res: Response, next: NextFunction) => {
+        const result = schema.safeParse(req.body);
+        if (!result.success) {
+            throw result.error;
+        }
+        req.body = result.data;
+        next();
+    };

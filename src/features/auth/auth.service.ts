@@ -4,7 +4,7 @@ import AuthRepository from "./auth.repository";
 import { Password } from "../../utils/PasswordHelper";
 import { AppError } from "../../utils/AppError";
 import { compare } from "bcryptjs";
-import { signAccessToken, signRefreshToken } from "../../utils/JWT";
+import { signAccessToken, signRefreshToken, verifyRefreshToken, } from "../../utils/JWT";
 
 const ERROR_MESSAGE = "Invalid Credentials"
 
@@ -55,12 +55,18 @@ class AuthService extends BaseService<User, Prisma.UserCreateInput, Prisma.UserU
             role: existing.role
         }
 
-        const tokens = {
+        const response = {
+            user: {
+                userId: existing.id,
+                name: existing.name,
+                email: existing.email,
+                role: existing.role
+            },
             accessToken: signAccessToken(payload),
             refreshToken: signRefreshToken(payload)
         }
 
-        return tokens
+        return response
     }
 
     async updateUser(id: number, data: {
@@ -87,6 +93,37 @@ class AuthService extends BaseService<User, Prisma.UserCreateInput, Prisma.UserU
             password: hashedPassword,
             role: data.role as Role
         }, id);
+    }
+
+    async refreshToken(token: string) {
+        try {
+            const payload = verifyRefreshToken(token);
+            const user = await AuthRepository.findById(Number(payload.userId));
+
+            if (!user) {
+                throw new AppError("User tidak ditemukan", 404);
+            }
+
+            const newPayload = {
+                userId: user.id,
+                role: user.role
+            };
+
+            const response = {
+                user: {
+                    userId: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role
+                },
+                accessToken: signAccessToken(newPayload),
+                refreshToken: signRefreshToken(newPayload)
+            };
+
+            return response;
+        } catch (error) {
+            throw new AppError("gagal refresh", 401);
+        }
     }
 }
 

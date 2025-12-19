@@ -12,6 +12,22 @@ export class BaseRepository<T, CreateInput, UpdateInput> {
         return this.model.findMany(args);
     }
 
+    async getNumberOf(args?: any) {
+        return this.model.count(args);
+    }
+
+    async findLast() {
+        return this.model.findFirst({
+            orderBy: {
+                createdAt: 'desc' // sort by creation time
+            }
+        });
+    }
+
+    async findFirst(args?: any) {
+        return this.model.findFirst(args);
+    }
+
     async create(data: CreateInput) {
         return this.model.create({ data });
     }

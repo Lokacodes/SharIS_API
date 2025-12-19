@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// Enum for LoanStatus
 export const LoanStatusEnum = z.enum(["DIAJUKAN", "DISETUJUI", "DITOLAK", "LUNAS"]);
 
 export const createLoanSchema = z.object({
@@ -15,6 +14,7 @@ export const createLoanSchema = z.object({
         .optional(), // optional karena default = now()
     Deadline: z
         .iso.date("Deadline harus berupa tanggal yang valid"),
+    TenorOption: z.number("opsi tenor wajib diisi"),
     status: LoanStatusEnum.optional().default("DIAJUKAN"),
 });
 
@@ -28,5 +28,6 @@ export const updateLoanSchema = z.object({
         .optional(),
     LoanDate: z.iso.date("harus berupa tanggal yang valid").optional(),
     Deadline: z.iso.date("Deadline harus berupa tanggal yang valid").optional(),
+    TenorOption: z.number().optional(),
     status: LoanStatusEnum.optional(),
 });

@@ -33,3 +33,7 @@ export const updateUserValidation = z.object({
         "SEKRETARIS"
     ], "role tidak valid").optional()
 })
+
+export const refreshSessionValidation = z.object({
+    refreshToken: z.string("refresh token tidak dikirim"),
+})

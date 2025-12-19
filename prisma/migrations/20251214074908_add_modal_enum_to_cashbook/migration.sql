@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `cashbook` MODIFY `module` ENUM('SAVING', 'LOAN', 'INSTALLMENT', 'INCOME', 'EXPENSE', 'MODAL') NOT NULL;

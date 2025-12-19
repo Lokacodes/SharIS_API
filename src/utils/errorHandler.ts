@@ -58,6 +58,6 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
             ResponseBuilder.error(err.message, err.statusCode)
         )
     }
-
+    console.error("❌ Unhandled error:", err)
     res.status(500).json(ResponseBuilder.error("internal server error", 500));
 }

@@ -16,6 +16,8 @@ class InstallmentService extends BaseService<Installment, Prisma.InstallmentCrea
         amount: number,
         isFromSukarela = false
     ) => {
+
+        console.log("amount dari service", amount)
         const activeLoan = await prisma.loan.findFirst({
             where: {
                 memberId,
@@ -37,10 +39,12 @@ class InstallmentService extends BaseService<Installment, Prisma.InstallmentCrea
 
         if (amount > sisaHutang) {
             throw new AppError(
-                `Jumlah cicilan melebihi sisa hutang. Sisa hutang: ${sisaHutang}`,
+                `Jumlah cicilan melebihi sisa hutang. Sisa hutang: ${sisaHutang}, akan dibayarkan : ${amount}`,
                 400
             );
         }
+
+
 
         const installment = await this.repository.create({
             loan: { connect: { id: activeLoan.id } },

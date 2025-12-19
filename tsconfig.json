@@ -47,6 +47,7 @@
 
 {
   "compilerOptions": {
+    "isolatedModules": false,
     // File Layout
     "rootDir": "./src",
     "outDir": "./dist",

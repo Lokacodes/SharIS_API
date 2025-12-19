@@ -21,6 +21,14 @@ export class BaseService<T, CreateInput, UpdateInput> {
         return this.repository.findAll(args);
     }
 
+    async findFirst(args?: any) {
+        return this.repository.findFirst(args);
+    }
+
+    async getNumberOf(args?: any) {
+        return this.repository.getNumberOf(args)
+    }
+
     async create(data: CreateInput) {
         return this.repository.create(data);
     }

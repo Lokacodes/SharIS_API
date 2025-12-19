@@ -25,6 +25,12 @@ export class BaseController<T, CreateInput, UpdateInput, Req extends Request = R
         res.json(ResponseBuilder.success(result, `daftar ${this.resourceName} berhasil didapatkan`))
     };
 
+    getNumberOf = async (req: Req, res: Res) => {
+        const result = await this.service.getNumberOf();
+
+        res.json(ResponseBuilder.success(result, `Jumlah ${this.resourceName} berhasil didapatkan`))
+    }
+
     create = async (req: Req, res: Res) => {
         const result = await this.service.create(req.body);
 

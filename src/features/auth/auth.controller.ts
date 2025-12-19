@@ -16,13 +16,19 @@ class AuthController extends BaseController<User, Prisma.UserCreateInput, Prisma
 
     login = async (req: Request, res: Response) => {
         const result = await AuthService.login(req.body)
-        res.json(ResponseBuilder.success({ apiToken: result }, "Berhasil Login"))
+        res.json(ResponseBuilder.success(result, "Berhasil Login"))
     }
 
     updateUser = async (req: Request, res: Response) => {
         const { id } = req.params
         const result = await AuthService.updateUser(Number(id), req.body)
         res.json(ResponseBuilder.success(result, "Sukses update user"))
+    }
+
+    refreshSession = async (req: Request, res: Response) => {
+        const { refreshToken } = req.body;
+        const result = await AuthService.refreshToken(refreshToken);
+        res.json(ResponseBuilder.success(result, "Sukses refresh token"));
     }
 }
 

@@ -104,7 +104,8 @@ class SavingController extends BaseController<Saving, Prisma.SavingCreateInput, 
                 balance: new Prisma.Decimal(0),
                 description: `Simpanan dari anggota ${body.memberId}`,
                 date: body.SavingDate ? new Date(body.SavingDate) : new Date(),
-                member: { connect: { id: Number(body.memberId) } }
+                member: { connect: { id: Number(body.memberId) } },
+                user: { connect: { id: Number(body.userId) } }
             });
 
             return savedResult;

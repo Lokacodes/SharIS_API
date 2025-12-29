@@ -17,7 +17,8 @@ export const createCashbookSchema = z.object({
         .transform((val) => parseFloat(val)),
     date: z.iso.date("harus berupa tanggal yang valid").optional(),
     description: z.string().min(1, "deskripsi wajib diisi"),
-    member: z.number("member wajib diisi")
+    member: z.number().optional(),
+    user: z.number("anggota wajib diisi")
 });
 
 export const updateCashbookSchema = z.object({
@@ -32,5 +33,6 @@ export const updateCashbookSchema = z.object({
         .optional(),
     date: z.iso.date("harus berupa tanggal yang valid").optional(),
     description: z.string().optional(),
-    member: z.number().optional()
+    member: z.number().optional(),
+    user: z.number().optional(),
 });

@@ -11,17 +11,9 @@ class CashbookController extends BaseController<Cashbook, Prisma.CashbookCreateI
 
     async InsertCashEntry(req: Request, res: Response) {
 
-        const payload =
-        {
-            ...req.body,
-            member: { connect: { id: Number(req.body.member) } }
-        }
-
-        console.log("payload", req.body)
-
         const cashbookEntry = await CashbookService.create({
             ...req.body,
-            member: { connect: { id: Number(req.body.member) } }
+            user: { connect: { id: Number(req.body.user) } }
         });
 
         res.json(ResponseBuilder.success(cashbookEntry))
@@ -29,6 +21,23 @@ class CashbookController extends BaseController<Cashbook, Prisma.CashbookCreateI
 
     async getAllCash(req: Request, res: Response) {
         const allCash = await CashbookService.getAll();
+
+        res.json(ResponseBuilder.success(allCash))
+    }
+
+    async getCashByModule(req: Request, res: Response) {
+        const { module } = req.query
+        const allCash = await CashbookService.findAll(
+            {
+                where: {
+                    module: module
+                },
+                include: {
+                    member: true,
+                    user: true
+                }
+            }
+        );
 
         res.json(ResponseBuilder.success(allCash))
     }

@@ -17,6 +17,12 @@ router.get(
 );
 
 router.get(
+    '/search',
+    authenticate,
+    asyncHandler(loanController.getLoanByStatus)
+);
+
+router.get(
     '/sum',
     authenticate,
     asyncHandler(loanController.getLoanSum)

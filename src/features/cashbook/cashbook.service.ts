@@ -31,7 +31,8 @@ class CashbookService extends BaseService<Cashbook, Prisma.CashbookCreateInput, 
     async getAll(): Promise<Cashbook[]> {
         return await this.repository.findAll({
             include: {
-                member: true
+                member: true,
+                user: true
             }
         });
     }

@@ -1,4 +1,4 @@
-import { CashModule, CashType, Loan, Prisma, PrismaClient } from "@prisma/client";
+import { CashModule, CashType, Loan, LoanStatus, Prisma, PrismaClient } from "@prisma/client";
 import { BaseController } from "../base/base.controller";
 import LoanService from "./loan.service";
 import { Request, Response } from "express";
@@ -7,6 +7,7 @@ import { AppError } from "../../utils/AppError";
 import loanService from "./loan.service";
 import cashbookService from "../cashbook/cashbook.service";
 import { log } from "console";
+import { stat } from "fs";
 
 const prisma = new PrismaClient()
 
@@ -49,6 +50,21 @@ class LoanController extends BaseController<Loan, Prisma.LoanCreateInput, Prisma
 
     async getLoan(req: Request, res: Response) {
         const result = await LoanService.findAll({
+            include: {
+                user: true,
+                member: true,
+                tenorOption: true
+            }
+        });
+        res.json(ResponseBuilder.success(result, "Sukses mendapatkan data member"));
+    };
+
+    async getLoanByStatus(req: Request, res: Response) {
+        const { status } = req.query
+        const result = await LoanService.findAll({
+            where: {
+                status: status
+            },
             include: {
                 user: true,
                 member: true,
@@ -106,7 +122,6 @@ class LoanController extends BaseController<Loan, Prisma.LoanCreateInput, Prisma
                     tenorOption: { connect: { id: Number(TenorOption) } }
                 },
             });
-
 
 
             return loan;

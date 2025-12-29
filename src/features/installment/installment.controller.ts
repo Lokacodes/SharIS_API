@@ -47,7 +47,8 @@ class InstallmentController extends BaseController<Installment, Prisma.Installme
             balance: new Prisma.Decimal(0),
             description: `Angsuran pokok pinjaman anggota ${installment.installment.memberId}`,
             date: new Date(installment.installment.date),
-            member: { connect: { id: Number(installment.installment.memberId) } }
+            member: { connect: { id: Number(installment.installment.memberId) } },
+            user: { connect: { id: Number(userId) } }
         });
 
         const cashbookEntryService = await cashbookService.create({
@@ -59,7 +60,8 @@ class InstallmentController extends BaseController<Installment, Prisma.Installme
             balance: new Prisma.Decimal(0),
             description: `Jasa pinjaman dari anggota ${installment.installment.memberId}`,
             date: new Date(installment.installment.date),
-            member: { connect: { id: Number(installment.installment.memberId) } }
+            member: { connect: { id: Number(installment.installment.memberId) } },
+            user: { connect: { id: Number(userId) } }
         });
 
         if (!cashbookEntryPrincipal && !cashbookEntryService) {

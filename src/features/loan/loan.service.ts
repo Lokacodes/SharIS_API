@@ -92,7 +92,8 @@ class LoanService extends BaseService<Loan, Prisma.LoanCreateInput, Prisma.LoanU
                 balance: new Prisma.Decimal(0),
                 description: `Pencairan pinjaman loan #${loan.id}`,
                 date: new Date(),
-                member: { connect: { id: Number(loan.memberId) } }
+                member: { connect: { id: Number(loan.memberId) } },
+                user: { connect: { id: Number(loan.userId) } }
             });
 
             return approvedLoan;

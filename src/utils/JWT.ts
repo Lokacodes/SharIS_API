@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 const secret = process.env.JWT_SECRET!
 const refreshSecret = process.env.JWT_REFRESH_SECRET!
 const expiresIn = "5h"
-const refreshExpiresIn = "7d"
+const refreshExpiresIn = "10h"
 
 export interface JwtPayload {
     userId: string,

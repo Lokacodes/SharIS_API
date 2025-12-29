@@ -9,6 +9,7 @@ import { convertDateFields } from "../../middleware/DateConversion";
 
 
 router.get('/', authenticate, cashbookController.getAllCash);
+router.get('/search', authenticate, cashbookController.getCashByModule);
 router.get('/:id', authenticate, cashbookController.getOne);
 router.post("/", authenticate, validate(createCashbookSchema), convertDateFields(["date"]), cashbookController.InsertCashEntry);
 router.patch('/:id', authenticate, validate(updateCashbookSchema), cashbookController.update);

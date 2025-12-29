@@ -142,6 +142,7 @@ class SHUService extends BaseService<Cashbook, Prisma.CashbookCreateInput, Prism
                 type: CashType.IN,
                 module: CashModule.INCOME,
                 referenceType: CashReferenceType.INSTALLMENT,
+                memberId: { not: null }
             },
         });
 
@@ -157,6 +158,7 @@ class SHUService extends BaseService<Cashbook, Prisma.CashbookCreateInput, Prism
         });
 
         usahaPerMember.forEach(u => {
+            if (!u.memberId) return;
             const existing = memberMap.get(u.memberId) || {
                 memberId: u.memberId,
                 modal: 0,

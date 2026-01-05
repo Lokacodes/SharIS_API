@@ -1,0 +1,6 @@
+export enum UserRole {
+    SUPERADMIN = "SUPERADMIN",
+    BENDAHARA = "BENDAHARA",
+    SEKRETARIS = "SEKRETARIS",
+    KETUA = "KETUA",
+}

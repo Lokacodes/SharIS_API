@@ -54,6 +54,9 @@ app.use("/shuConfig", SHUConfigRouter)
 import NeracaRouter from "./features/neraca/neraca.router"
 app.use("/neraca", NeracaRouter)
 
+import exportLaporanTahunan from "./features/exportexcel/exportLaporanTahunan.router"
+app.use("/export", exportLaporanTahunan)
+
 app.use(errorHandler)
 
 app.listen(port, () => {

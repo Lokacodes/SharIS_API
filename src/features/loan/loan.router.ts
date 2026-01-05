@@ -8,63 +8,67 @@ import { validate } from "../../middleware/validator";
 import { authenticate } from "../../middleware/Authentication";
 import { createLoanSchema, updateLoanSchema } from "./loan.validator";
 import { convertDateFields } from "../../middleware/DateConversion";
+import { authorize } from "../../middleware/Authorization";
 
-// GET routes
 router.get(
     '/',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA"]),
     asyncHandler(loanController.getLoan)
 );
 
 router.get(
     '/search',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA", "KETUA"]),
     asyncHandler(loanController.getLoanByStatus)
 );
 
 router.get(
     '/sum',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA", "SEKRETARIS"]),
     asyncHandler(loanController.getLoanSum)
 );
 
 router.get(
     '/search/:id',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA"]),
     asyncHandler(loanController.findLoanByMemberId)
 );
 
 router.get(
     '/:id',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA", "KETUA"]),
     asyncHandler(loanController.findLoanById)
 );
 
-router.post("/:id/approve", authenticate, asyncHandler(loanController.approveLoan));
+router.post("/:id/approve", authenticate, authorize(["SUPERADMIN", "KETUA"]), asyncHandler(loanController.approveLoan));
 
-// POST
 router.post(
     '/',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA"]),
     validate(createLoanSchema),
     convertDateFields(["LoanDate", "Deadline"]),
     asyncHandler(loanController.createLoan)
 );
 
-// PATCH
 router.patch(
     '/:id',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA"]),
     validate(updateLoanSchema),
     convertDateFields(["LoanDate", "Deadline"]),
     asyncHandler(loanController.update)
 );
 
-
-// DELETE
 router.delete(
     '/:id',
     authenticate,
+    authorize(["SUPERADMIN", "BENDAHARA"]),
     asyncHandler(loanController.delete)
 );
 

@@ -3,6 +3,7 @@ import { BaseController } from "../base/base.controller";
 import CashbookService from "./cashbook.service";
 import { NextFunction, Request, Response } from "express";
 import ResponseBuilder from "../../utils/ResponseBuilder";
+import { AppError } from "../../utils/AppError";
 
 class CashbookController extends BaseController<Cashbook, Prisma.CashbookCreateInput, Prisma.CashbookUpdateInput> {
     constructor() {
@@ -26,11 +27,21 @@ class CashbookController extends BaseController<Cashbook, Prisma.CashbookCreateI
     }
 
     async getCashByModule(req: Request, res: Response) {
-        const { module } = req.query
+        const { module, year } = req.query
+
+        if (!year) {
+            throw new AppError("tahun SHU wajib disertakan!", 400)
+        }
+        const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+        const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
         const allCash = await CashbookService.findAll(
             {
                 where: {
-                    module: module
+                    module: module,
+                    date: {
+                        gte: startDate,
+                        lte: endDate,
+                    },
                 },
                 include: {
                     member: true,
